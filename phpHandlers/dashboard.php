@@ -5,33 +5,26 @@
     session_start();
     require 'connection.php';
     
-    
-    
-    
-    $user= file_get_contents('php://input');
-    $method = $_SERVER['REQUEST_METHOD'];
-    switch($method){
-        case "POST":
-           print_r($user);
-            $user = json_decode(file_get_contents("php://input"),true);
-                
-                    $id = (int)$user["idu"];
-                    $passport = $user['passport'];
-                    
-                    print_r($passport);
-                    foreach ($user as $key => $value) {
-                     
-                        if(($key !== "idu")&&($key !=="passport")){
-                        $sql = "UPDATE`personalinfostudent`SET `$key`='$value',`passport`='$path' WHERE `personalinfostudent`.`id`='$id'";
-                        $update =  mysqli_query($conn, $sql);
-                        if(!$update){
-                            // echo "error";
-                        }else{
-                            // echo "success";
-                        }
-                        }
-                    }
-            
-            break;
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        
+        if (!empty($_FILES['passport']['name']) && !empty($_POST['idu'])) {
+           $passport = $_FILES['passport']['name'];
+           $id = $_POST['idu'];
+           echo $passport;
+           $extension = explode('.', $passport);
+        $newFileName = $matric. '.'.end($extension);
+
+        $temp_name = $_FILES['passport']['tmp_name'];
+
+
+        $path ="../../images/". $newFileName;  
+        $sql = "UPDATE`personalinfostudent`SET `passport`='$passport' WHERE `personalinfostudent`. `id` ='$matric'";
+        }else{
+          
+        }
     }
+
+    
+    
+   
  ?>
