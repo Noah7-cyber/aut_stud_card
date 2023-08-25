@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 import EMAIL_VALIDATION_KEY from '../emailvalidapi_key'
  
 function EmailVerify() {
-  let error = 'checking errors';
+  
  const navigate = useNavigate();
     const [inputs, setInputs] = useState({
         email:"",
@@ -16,10 +16,10 @@ function EmailVerify() {
         matric: ""
     })
    
-   
-    const testEmail = async() =>{
+    const [error, setErr] = useState("checking errors");
+    // const testEmail = async() =>{
       
-    }
+    // }
     const location = useLocation();
     let message = location.state?.message;
     
@@ -31,50 +31,37 @@ function EmailVerify() {
   
    
     //handle click
-    const handleClick = async(e) =>{ 
+    const handleClick = (e) =>{ 
       e.preventDefault();
-        try{
         inputs.matric = message.matric;
         console.log(inputs.matric);
-        await testEmail();
+         
        const password = inputs.password;
-       const confirmPassword = inputs.confirmPassword  
-       const email = inputs.email;
+       const confirmPassword = inputs.confirmPassword ;
+      //  const email = inputs.email;
 
-     const response = await axios.get(`https://emailvalidation.abstractapi.com/v1/?api_key=${EMAIL_VALIDATION_KEY}&email=${email}`);
-     const data = await response.json(); 
-          console.log(data);
+    //  const response = await axios.get(`https://emailvalidation.abstractapi.com/v1/?api_key=${EMAIL_VALIDATION_KEY}&email=${email}`);
+    //  const data = await response.json(); 
+    //       console.log(data);
 
-                 if(data.deliverability !== 'DELIVERABLE'){
-                  e.preventDefault();
-                 error = 'Your email dosent exist';
-                 }
-
-      const checkPassword = (password === confirmPassword)
-        if(checkPassword == false){
-        e.preventDefault();
-        error = 'Your password is not correct';
-      }
-       if(data.deliverability === 'DELIVERABLE' && (checkPassword===true)){
-        e.preventDefault();
-        const url = "http://localhost/autStudN/phpHandlers/emailverification.php"
+                //  if(data.deliverability !== 'DELIVERABLE'){
+                //   e.preventDefault();
+                //  error = 'Your email dosent exist';
+                //  }
+//data.deliverability === 'DELIVERABLE' && 
+      const checkPassword = (password === confirmPassword);
+      console.log(password, confirmPassword);
+        if(!checkPassword){
+          setErr('Your password does not correlate') ;     
+      }else if((checkPassword===true)){
+        const url = "http://localhost/autStudN/phpHandlers/emailverification.php";
         axios.post(url, inputs)
         .then(res =>{
-          if (res.data !== "success") {
-            alert("things are not done properly")
-          }else{
-          console.log(inputs);
-          console.log(res.data)
-          navigate("/login")
-          }
+        console.log(res.data);
         })  
-        .catch((e) => alert(`matric not set ${e.message}`)) 
+    }     
     }
-  }catch(e){
-      console.log(e.message);
-    }
-  
-    }
+
   return (
     <>
     <div className="h-screen w-screen bg-blue-300 md:grid">
@@ -82,7 +69,7 @@ function EmailVerify() {
         <SideNav secoundStyle="hsl(206, 94%, 87%)"/> 
         {error && <>
       <div className="px-6 absolute md:relative top-0 md:pt-6" id="form"> 
-        <form  className="flex w-full flex-col shadow-lg py-3  px-3 rounded-xl md:shadow-none" id="myForm" style={{backgroundColor:" hsl(0, 0%, 100%)"}}>
+        <form   className="flex w-full flex-col shadow-lg py-3  px-3 rounded-xl md:shadow-none" id="myForm" style={{backgroundColor:" hsl(0, 0%, 100%)"}}>
             <h1 className="text-2xl font-bold">Email confirmation</h1>
             <p style={{color:"hsl(231, 11%, 63%)"}}>Please provide email and verify password</p>
            <p className=" text-base text-amber-500 font-bold">{error}</p>
@@ -98,7 +85,7 @@ function EmailVerify() {
             
             <div className="flex justify-between mt-3">
             <Link to = "/">
-               <input type="submit" className="rounded-lg border-solid border-2  py-2 px-2  text-lg font-semibold hover:cursor-pointer shadow-md "   value="go back"   />
+               <input type="submit" className="rounded-lg border-solid border-2  py-2 px-2  text-lg font-semibold hover:cursor-pointer shadow-md "   value="Go back"   />
                </Link>
            
             <input onClick={handleClick} id="myButton" type="submit" className="rounded-lg border-solid border-2 py-2 px-2  text-lg font-semibold shadow-md text-white "   value="confirm" style={{backgroundColor:"hsl(243, 100%, 62%)"}}  required/>

@@ -21,6 +21,7 @@ function App() {
         <Route path="/login" element={<Log />}></Route>
         <Route path='/dashboard' element={<Dashboard />}></Route>
           <Route path="/update" element={<Update />}></Route>
+          <Route path= "*" element={<Error />}></Route>
         </Routes>
    
   

@@ -95,7 +95,7 @@ import axios from 'axios'
             <input className="rounded-lg border-solid border-2 "  type="radio" name="gender" id="female" onChange={e => setInputs({...inputs, gender:e.target.value})} value="Female" required/>
             </div>
             
-            <label className="text-sm mt-2 font-medium"  htmlFor="tel">Contact details</label>
+            <label className="text-sm mt-2 font-medium"  htmlFor="tel">Phone Number</label>
             <input id="contact" className="rounded-lg border-solid border-2 py-2 px-2"  type="tel"  name="tel" onChange={e => setInputs({...inputs, contact:e.target.value})} />
             <p className="text-red-500 text-sm hidden mb-3" id="contacterror">Please input both prefix such as +*** and correct phone number</p>
             <div className="flex justify-between mt-3">

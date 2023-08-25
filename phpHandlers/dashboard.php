@@ -10,21 +10,39 @@
         if (!empty($_FILES['passport']['name']) && !empty($_POST['idu'])) {
            $passport = $_FILES['passport']['name'];
            $id = $_POST['idu'];
-           echo $passport;
            $extension = explode('.', $passport);
-        $newFileName = $matric. '.'.end($extension);
-
+        $newFileName = $id. '.'.end($extension);
         $temp_name = $_FILES['passport']['tmp_name'];
-
-
-        $path ="../../images/". $newFileName;  
-        $sql = "UPDATE`personalinfostudent`SET `passport`='$passport' WHERE `personalinfostudent`. `id` ='$matric'";
+        $path ="./images/". $newFileName;  
+        $uploadToDb = move_uploaded_file($temp_name, $path);
+        $sql = "UPDATE`personalinfostudent`SET `passport`='$path' WHERE `personalinfostudent`. `id` ='$id'";
+        $passportUpdate = mysqli_query($conn, $sql);    
+        if(!$uploadToDb && !$passportUpdate){
+            echo "error";
         }else{
-          
+            echo "success";
+        }
+    }else{
+            $user= file_get_contents('php://input');
+            $user = json_decode(file_get_contents("php://input"),true);
+
+                    $id = (int)$user["idu"];
+                    foreach ($user as $key => $value) {
+                        if(($key !== "idu")){
+                        $sql = "UPDATE`personalinfostudent`SET `$key`='$value' WHERE `personalinfostudent`.`id`='$id'";
+                        $update =  mysqli_query($conn, $sql);
+                            
+                        }
+                        if (!$update) {
+                            echo "error";
+                        }else{
+                            echo"success";
+                        }
+                        
         }
     }
 
-    
+}
     
    
  ?>

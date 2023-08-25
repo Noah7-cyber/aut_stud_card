@@ -19,7 +19,7 @@
             $matric = $user['matric'];            
             $sql = "UPDATE`personalinfostudent`SET `email`='$email', `password` = '$password' WHERE `personalinfostudent`. `matric` ='$matric'";
             $updateUser = mysqli_query($conn, $sql);
-            if($row = my_sqli_assoc($updateUser)){
+            if($updateUser){
                 echo "success";
                 session_destroy();
              }else {

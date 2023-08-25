@@ -1,6 +1,8 @@
 import axios from 'axios';
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import {  toast } from 'react-toastify';
 
+import 'react-toastify/dist/ReactToastify.css';
  const Update = ({idu, closeModal}) => {
       const [inputs, setInputs] = useState({
         name:"",
@@ -11,7 +13,9 @@ import React, { useState } from 'react'
       const [passport, setPassport] = useState('');
       const [err, setErr] = useState(false)
       const updateValues={}; 
-      
+      const notify = () => toast("Update Successful");
+
+
       const handleUpdate =(e)=>{
         e.preventDefault();  
         console.log(passport);
@@ -31,8 +35,11 @@ import React, { useState } from 'react'
        if(passport === null){
          setErr(true)
        }else{   
-          //  axios.post(url, updateWork, {headers: {"Content-Type" : "*"}})         
-          //  .then(res => console.log(res.data))
+           axios.post(url, updateWork)         
+           .then(res => {
+            console.log(res.data);
+            notify();
+           })
            axios.post(url, formData, {
             headers:{"Content-Type" : '*',},
            })
@@ -44,9 +51,10 @@ import React, { useState } from 'react'
      }
   return (
    <>
-    <div className="px-6 border-solid border-r-slate-600 border-2 rounded-lg absolute md:relative top-0 pt-4 self center drop-shadow-lg" id="form"> 
+    <div className=" w-1/2 border-solid h-fit border-r-slate-600 border-2 rounded-lg absolute md:relative top-[20%] pt-4 self center shadow-lg"> 
+   
     <button onClick={() =>{closeModal(false)}}  className='float-right'>X</button>
-        <form  className="flex w-full flex-col shadow-lg py-3  px-3 rounded-xl md:shadow-none" id="myForm" style={{backgroundColor:" hsl(0, 0%, 100%)"}} method="POST" encType="multipart/form-data">
+        <form  className="flex w-3/4 flex-col shadow-lg py-3  px-3 rounded-xl md:shadow-none" id="myForm" style={{backgroundColor:" hsl(0, 0%, 100%)"}} method="POST" encType="multipart/form-data">
             <h1 className="text-2xl font-bold">Update Info</h1>
             <p style={{color:"hsl(231, 11%, 63%)"}}>Please provide a passport to work with</p>
            
